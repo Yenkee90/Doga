@@ -1,205 +1,221 @@
-/* ========= Betűtípusok ========= */
+/* ===== Alap ===== */
 
-@font-face{
-    font-family: "Pricedown";
-    src:url("fonts/pricedown.ttf");
-}
-
-@font-face{
-    font-family: "Chubby";
-    src:url("fonts/chubby.ttf");
-}
-
-@font-face{
-    font-family: "Airmole";
-    src:url("fonts/airmole.ttf");
-}
-
-/* ========= Háttér ========= */
-
-body{
-
+*{
     margin:0;
     padding:0;
+    box-sizing:border-box;
+}
+
+body{
 
     width:100%;
     height:100vh;
 
+    background:#ffffff;
+
     overflow:hidden;
 
+    font-family:Arial, Helvetica, sans-serif;
+
+}
+
+/* ===== Jobb felső üres hely ===== */
+
+.top-space{
+
+    position:absolute;
+
+    top:20px;
+
+    right:20px;
+
+    width:120px;
+
+    height:45px;
+
+}
+
+/* ===== Jobb oldali piros sáv ===== */
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+
+    right:160px;
+
+    width:260px;
+
+    height:100vh;
+
+    background:#D40000;
+
+    border-left:1px solid black;
+
+    border-right:1px solid black;
+
     display:flex;
+
+    flex-direction:column;
+
     align-items:center;
 
-    background:white;
 }
 
-@media (prefers-color-scheme: dark){
-
-body{
-
-background:black;
-
-}
-
-}
-
-/* ========= Piros oszlop ========= */
-
-.red-bar{
-
-position:absolute;
-
-left:8%;
-
-top:0;
-
-height:100%;
-
-width:220px;
-
-background:#d00000;
-
-border-left:1px solid black;
-
-border-right:1px solid black;
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-}
-
-/* ========= Cím ========= */
+/* ===== Cím ===== */
 
 .title{
 
-margin-top:80px;
+    margin-top:60px;
 
-color:white;
+    width:100%;
 
-text-align:center;
-
-font-family:"Pricedown";
-
-font-size:55px;
-
--webkit-text-stroke:2px black;
-
-user-select:none;
+    text-align:center;
 
 }
 
-/* ========= Gomb ========= */
+.title h1{
 
-.memory-btn{
+    color:white;
 
-margin-top:180px;
+    font-size:42px;
 
-width:180px;
+    font-weight:bold;
 
-height:70px;
+    -webkit-text-stroke:2px black;
 
-background:white;
-
-border:none;
-
-border-radius:12px;
-
-cursor:pointer;
-
-font-family:"Chubby";
-
-font-size:20px;
-
-color:white;
-
--webkit-text-stroke:2px black;
-
-transition:0.3s;
+    margin:4px 0;
 
 }
 
-.memory-btn:hover{
+/* ===== Középső rész ===== */
 
-transform:scale(1.05);
+.center{
 
-}
+    flex:1;
 
-/* ========= Exit ========= */
+    display:flex;
 
-.exit-btn{
+    justify-content:center;
 
-margin-top:auto;
-
-margin-bottom:40px;
-
-width:150px;
-
-height:60px;
-
-background:#00b000;
-
-border:none;
-
-border-radius:12px;
-
-cursor:pointer;
-
-font-family:"Airmole";
-
-font-size:24px;
-
-color:white;
-
--webkit-text-stroke:2px black;
-
-transition:.3s;
+    align-items:center;
 
 }
 
-.exit-btn:hover{
+/* ===== Emlékezz gomb ===== */
 
-transform:scale(1.05);
+#memoryButton{
+
+    width:190px;
+
+    height:70px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#FFD400;
+
+    color:black;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.25s;
 
 }
 
-/* ========= Mobil ========= */
+#memoryButton:hover{
+
+    transform:scale(1.05);
+
+}
+
+/* ===== Alsó rész ===== */
+
+.bottom{
+
+    margin-bottom:35px;
+
+}
+
+/* ===== Exit gomb ===== */
+
+#exitButton{
+
+    width:150px;
+
+    height:55px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#00AA33;
+
+    color:white;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+#exitButton:hover{
+
+    transform:scale(1.05);
+
+}
+
+/* ===== Mobil ===== */
 
 @media(max-width:700px){
 
-.red-bar{
+.sidebar{
 
-left:0;
+    width:200px;
 
-width:170px;
-
-}
-
-.title{
-
-font-size:40px;
-
-margin-top:60px;
+    right:15px;
 
 }
 
-.memory-btn{
+.title h1{
 
-width:140px;
-
-font-size:16px;
-
-margin-top:140px;
+    font-size:34px;
 
 }
 
-.exit-btn{
+#memoryButton{
 
-width:120px;
+    width:160px;
 
-font-size:18px;
+    height:65px;
+
+    font-size:18px;
+
+}
+
+#exitButton{
+
+    width:130px;
+
+    height:50px;
+
+    font-size:18px;
+
+}
+
+.top-space{
+
+    width:90px;
 
 }
 
