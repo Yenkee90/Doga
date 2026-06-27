@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Doga</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doga</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+<body>
 
-<body class="page-doga">
+<div class="red-bar">
 
-  <div class="red-line"></div>
+    <div class="title">
+        <div>Deviant</div>
+        <div>Narrative</div>
+    </div>
 
-  <div class="center-box">
-    <h1 class="gold-text">Emlékezz a múltra!</h1>
-
-    <a class="btn-yellow" href="jelen.html">
-      Applikáció
-    </a>
-
-    <button class="btn-red" onclick="location.href='jelen.html'">
-      Kilép
+    <button class="memory-btn">
+        Emlékezz a múltra!
     </button>
-  </div>
+
+    <button class="exit-btn" onclick="exitPage()">
+        Exit
+    </button>
+
+</div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
