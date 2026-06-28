@@ -1,77 +1,31 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doga - Indító</title>
-    <link rel="manifest" href="manifest.json">
-    <script>
-        if (navigator.userAgent.includes("FBAN") || navigator.userAgent.includes("FBAV")) {
-            window.location.href = "intent://" + window.location.hostname + window.location.pathname + "#Intent;scheme=https;package=com.android.chrome;end";
-        }
-    </script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #111111;
-            font-family: Arial, sans-serif;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-        @keyframes pulzal {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.2); }
-            70% { transform: scale(1.03); box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-        }
-        .indito-gomb {
-            padding: 15px 40px;
-            font-size: 20px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            color: #ffffff;
-            background-color: #222222;
-            border: 2px solid #ffffff;
-            border-radius: 30px;
-            cursor: pointer;
-            animation: pulzal 2s infinite ease-in-out;
-            -webkit-tap-highlight-color: transparent;
-        }
-    </style>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Doga Generator</title>
+
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#000000">
+
+<link rel="stylesheet" href="index.css">
+
 </head>
+
 <body>
 
-    <button id="pwaBtn" class="indito-gomb">INDÍTÁS</button>
+<div class="center">
 
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
+<button id="installBtn" class="generatorBtn">
+Generator
+</button>
 
-        let dePrompt;
-        const gomb = document.getElementById('pwaBtn');
+</div>
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            dePrompt = e;
-        });
-
-        gomb.addEventListener('click', async () => {
-            if (dePrompt) {
-                dePrompt.prompt();
-                const { outcome } = await dePrompt.userChoice;
-                if (outcome === 'accepted') {
-                    dePrompt = null;
-                }
-            } else {
-                window.location.href = '1one/index1.html';
-            }
-        });
-    </script>
+<script src="index.js"></script>
 
 </body>
 </html>
