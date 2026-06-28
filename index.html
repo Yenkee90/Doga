@@ -1,56 +1,83 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Doga</title>
-
-    <link rel="stylesheet" href="style.css">
-
+    <title>Doga - Indító</title>
+    <link rel="manifest" href="manifest.json">
+    <script>
+        if (navigator.userAgent.includes("FBAN") || navigator.userAgent.includes("FBAV")) {
+            window.location.href = "intent://" + window.location.hostname + window.location.pathname + "#Intent;scheme=https;package=com.android.chrome;end";
+        }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            font-family: sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        @keyframes pulzal {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 40, 0, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 40, 0, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 40, 0, 0); }
+        }
+        .generator-gomb {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: #FF2800;
+            border: 8px solid #FFDE00;
+            outline: 3px solid #002060;
+            color: #ffffff;
+            font-family: Impact, sans-serif;
+            font-size: 32px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+            animation: pulzal 2s infinite ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
 </head>
-
 <body>
 
-    <!-- Hely a későbbi PC/Mobil gombnak -->
-    <div class="top-space"></div>
+    <button id="pwaBtn" class="generator-gomb">Generator</button>
 
-    <!-- Jobb oldali piros sáv -->
-    <div class="sidebar">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
 
-        <div class="title">
+        let dePrompt;
+        const gomb = document.getElementById('pwaBtn');
 
-            <h1>Deviant</h1>
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            dePrompt = e;
+        });
 
-            <h1>Narrative</h1>
-
-        </div>
-
-        <div class="center">
-
-            <button id="memoryButton">
-
-                Emlékezz a múltra!
-
-            </button>
-
-        </div>
-
-        <div class="bottom">
-
-            <button id="exitButton">
-
-                Exit
-
-            </button>
-
-        </div>
-
-    </div>
-
-<script src="script.js"></script>
+        gomb.addEventListener('click', async () => {
+            if (dePrompt) {
+                dePrompt.prompt();
+                const { outcome } = await dePrompt.userChoice;
+                if (outcome === 'accepted') {
+                    dePrompt = null;
+                }
+            } else {
+                window.location.href = '1one/index1.html';
+            }
+        });
+    </script>
 
 </body>
 </html>
