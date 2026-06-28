@@ -1,0 +1,38 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000000;
+    font-family:Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.teszt{
+
+    color:#FFFFFF;
+
+    font-size:min(85vw,85vh);
+
+    font-weight:normal;
+
+    white-space:nowrap;
+
+    transform:rotate(90deg);
+
+    user-select:none;
+
+    text-align:center;
+
+}
