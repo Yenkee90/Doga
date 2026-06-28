@@ -2,7 +2,7 @@
   "name": "Doga",
   "short_name": "Doga",
   "description": "Doga Generator",
-  "start_url": "1one/index1.html",
+  "start_url": "index.html",
   "scope": "/",
   "display": "standalone",
   "background_color": "#000000",
