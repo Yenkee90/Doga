@@ -22,6 +22,7 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.8);
             max-width: 100%;
             max-height: 100%;
+            aspect-ratio: 2 / 1;
         }
 
         .touch-btn {
@@ -30,8 +31,8 @@
             width: 75px;
             height: 75px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.25);
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
             color: white;
             font-size: 14px;
             font-weight: bold;
@@ -42,7 +43,7 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             z-index: 10;
         }
-        .touch-btn:active { background: rgba(255, 255, 255, 0.5); }
+        .touch-btn:active { background: rgba(255, 255, 255, 0.6); }
         #left-btn { left: 4%; }
         #right-btn { right: 4%; }
 
@@ -92,23 +93,9 @@
             background: #ffcc00; color: #000; border: none; border-radius: 5px; cursor: pointer;
             box-shadow: 0 4px 10px rgba(255,204,0,0.4);
         }
-        
-        /* Biztosított elfordulás jelző */
-        #rotate-warning {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #050510; color: white;
-            z-index: 30; justify-content: center; align-items: center;
-            text-align: center; padding: 20px; font-size: 20px;
-        }
     </style>
 </head>
 <body>
-
-    <div id="rotate-warning">
-        <div>🔄 Kérjük, fordítsd oldalra (fekvő helyzetbe) a telefonodat a játékhoz!</div>
-    </div>
 
     <div id="game-container">
         <div id="ui-overlay">
@@ -146,7 +133,6 @@ const overlay = document.getElementById("screen-overlay");
 const overlayTitle = document.getElementById("overlay-title");
 const overlayDesc = document.getElementById("overlay-desc");
 const startBtn = document.getElementById("start-btn");
-const rotateWarning = document.getElementById("rotate-warning");
 
 let gameState = "MENU"; 
 let gameTime = 300; 
@@ -161,26 +147,6 @@ const FAZISOK = {
 
 let player, ufo, cameraX, obstacles, backgroundStars;
 let ufoActive = false;
-
-// Tájolás ellenőrző függvény ablakméret alapján (atombiztos)
-function checkOrientation() {
-    if (window.innerHeight > window.innerWidth) {
-        rotateWarning.style.display = "flex";
-    } else {
-        rotateWarning.style.display = "none";
-        // Automatikus canvas igazítás
-        resizeCanvas();
-    }
-}
-
-function resizeCanvas() {
-    window.scrollTo(0, 1); // Trükk a címsor elrejtésére régebbi mobilokon
-}
-
-window.addEventListener("resize", checkOrientation);
-window.addEventListener("orientationchange", checkOrientation);
-// Azonnali ellenőrzés betöltéskor
-checkOrientation();
 
 class Cow {
     constructor() {
@@ -297,3 +263,26 @@ function spawnObstacle() {
     if (gameState !== "PLAYING") return;
     let currentPhase = getCurrentPhase();
     let type = "hay";
+    if (currentPhase === "FARM") type = Math.random() > 0.5 ? "hay" : "fence";
+    else if (currentPhase === "FOREST") type = Math.random() > 0.5 ? "log" : "bush";
+    else if (currentPhase === "TOWN") type = Math.random() > 0.5 ? "hydrant" : "box";
+
+    let spawnX = player.x + 600 + Math.random() * 300;
+    if (gameTime > 5) {
+        obstacles.push({ x: spawnX, y: 310, width: 30, height: 30, type: type });
+    }
+    setTimeout(spawnObstacle, 1500 + Math.random() * 1500);
+}
+
+function getCurrentPhase() {
+    if (gameTime > 180) return "FARM";    
+    if (gameTime > 120) return "FOREST";  
+    return "TOWN";                        
+}
+
+function setupInput() {
+    leftBtn.addEventListener("touchstart", (e) => { e.preventDefault(); keys.run = true; }, {passive: false});
+    leftBtn.addEventListener("touchend", (e) => { e.preventDefault(); keys.run = false; }, {passive: false});
+    leftBtn.addEventListener("touchcancel", (e) => { keys.run = false; });
+    
+    rightBtn.addEventListener("touchstart", (e) => { e.preventDefault(); keys.jump = true; }, {passive: false});
