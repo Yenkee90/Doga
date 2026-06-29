@@ -270,4 +270,19 @@ function draw() {
         ctx.fillStyle = "#00ffff"; ctx.beginPath(); ctx.arc(ufoScreenX + 40, 20, 14, Math.PI, 0); ctx.fill();
     }
 
-    let m = Math.floor(gameTime / 60); let s = gameTime % 60;
+        let m = Math.floor(gameTime / 60); let s = gameTime % 60;
+    uiDiv.innerText = `Zóna: ${FAZISOK[phase].title} | Hátralévő táv: ${m}:${s < 10 ? '0' : ''}${s} ${abductionTimer > 0 ? '⚠️ UFO VESZÉLY!' : ''}`;
+}
+
+function loop() {
+    if (gameState === "PLAYING") updatePhysics();
+    draw();
+    requestAnimationFrame(loop);
+}
+
+generateStars();
+startGame(); 
+loop();
+</script>
+</body>
+</html>
