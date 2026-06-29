@@ -161,7 +161,7 @@ function updatePhysics() {
     }
 
     if (ufoActive) {
-        ufoX += ((playerX - cameraX) - 20 - ufoX) * 0.05;
+        ufoX += ((playerX - cameraX) - 20 - ufoX) * 0.035;
         
         // Sugár ütközés
         if (playerX - cameraX > ufoX - 10 && playerX - cameraX < ufoX + 90) {
