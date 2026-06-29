@@ -24,36 +24,36 @@
             max-height: 100%;
         }
 
-        /* Mobil érintőgombok a két szélen */
+        /* Áttetszőbb gombok a jobb láthatóságért */
         .touch-btn {
             position: absolute;
-            bottom: 10%;
-            width: 80px;
-            height: 80px;
+            bottom: 8%;
+            width: 75px;
+            height: 75px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            border: 3px solid rgba(255, 255, 255, 0.4);
-            color: white;
-            font-size: 16px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
             font-weight: bold;
             display: flex;
             justify-content: center;
             align-items: center;
-            text-shadow: 0 2px 4px black;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            text-shadow: 0 1px 3px black;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             z-index: 10;
         }
-        .touch-btn:active { background: rgba(255, 255, 255, 0.5); }
-        #left-btn { left: 5%; } /* FUTÁS */
-        #right-btn { right: 5%; } /* UGRÁS */
+        .touch-btn:active { background: rgba(255, 255, 255, 0.4); color: white; }
+        #left-btn { left: 4%; }
+        #right-btn { right: 4%; }
 
         #ui-overlay {
             position: absolute;
-            top: 20px;
+            top: 15px;
             left: 50%;
             transform: translateX(-50%);
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             text-align: center;
             pointer-events: none;
@@ -62,8 +62,8 @@
         }
 
         #abduction-bar-container {
-            width: 200px;
-            height: 15px;
+            width: 180px;
+            height: 12px;
             background: rgba(0,0,0,0.5);
             border: 2px solid #ffaa00;
             margin-top: 5px;
@@ -87,21 +87,38 @@
             padding: 20px;
         }
         #screen-overlay h1 { font-size: 32px; color: #ffcc00; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255,204,0,0.5); }
-        #screen-overlay p { font-size: 16px; margin-bottom: 20px; max-width: 500px; }
+        #screen-overlay p { font-size: 15px; margin-bottom: 20px; max-width: 500px; line-height: 1.4; }
         #start-btn {
-            padding: 12px 30px; font-size: 18px; font-weight: bold;
+            padding: 12px 35px; font-size: 18px; font-weight: bold;
             background: #ffcc00; color: #000; border: none; border-radius: 5px; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255,204,0,0.3);
+        }
+        
+        #rotate-warning {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #050510; color: white;
+            z-index: 30; justify-content: center; align-items: center;
+            text-align: center; padding: 20px; font-size: 20px;
+        }
+        @media (orientation: portrait) {
+            #rotate-warning { display: flex; }
         }
     </style>
 </head>
 <body>
+
+    <div id="rotate-warning">
+        <div>🔄 Kérjük, fordítsd oldalra (fekvő helyzetbe) a telefonodat a játékhoz!</div>
+    </div>
 
     <div id="game-container">
         <div id="ui-overlay">
             <div id="zone-text">ZÓNA: CSŰR</div>
             <div id="time-text">Hátralévő táv: 5:00</div>
             <div id="abduction-bar-container">
-                <div>UFO ELRABLÁS VESZÉLY!</div>
+                <div style="font-size: 11px; margin-bottom: 2px;">UFO ELRABLÁS VESZÉLY!</div>
                 <div id="abduction-bar"></div>
             </div>
         </div>
@@ -109,12 +126,11 @@
         <div id="screen-overlay">
             <h1 id="overlay-title">TEHÉN FUTAM</h1>
             <p id="overlay-desc">Fuss el a Csűrből egészen a Rendőrségig az éjszakán át! Kerüld el a tanyasi, erdei és városi akadályokat, és ne hagyd, hogy az UFO sugara 3 másodpercnél tovább magával ragadjon!</p>
-            <button id="start-btn" onclick="startGame()">JÁTÉK INDÍTÁSA</button>
+            <button id="start-btn" onclick="requestFullscreenAndStart()">JÁTÉK INDÍTÁSA</button>
         </div>
 
         <canvas id="gameCanvas" width="800" height="400"></canvas>
 
-        <!-- Mobil gombok -->
         <div id="left-btn" class="touch-btn">FUTÁS</div>
         <div id="right-btn" class="touch-btn">UGRÁS</div>
     </div>
@@ -123,7 +139,6 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Gombok és UI elemek
 const leftBtn = document.getElementById("left-btn");
 const rightBtn = document.getElementById("right-btn");
 const uiZone = document.getElementById("zone-text");
@@ -135,23 +150,18 @@ const overlayTitle = document.getElementById("overlay-title");
 const overlayDesc = document.getElementById("overlay-desc");
 const startBtn = document.getElementById("start-btn");
 
-// Játékállapotok
-let gameState = "MENU"; // MENU, PLAYING, GAMEOVER, WIN
-let gameTime = 300; // Összesen 5 perc (300 másodperc)
+let gameState = "MENU"; 
+let gameTime = 300; 
 let timerInterval;
 
-// Irányítás állapotok
 let keys = { run: false, jump: false };
 
-// Időzítések másodpercben a fázisokhoz
 const FAZISOK = {
-    BARN: { duration: 0, title: "TANYA PÁLYA", bg: "#0d0d26" }, // Kezdés
-    FARM: { duration: 120, title: "TANYA PÁLYA", bg: "#0d0d26" }, // 2 perc (120 mp)
-    FOREST: { duration: 60, title: "ERDŐ PÁLYA", bg: "#051a05" }, // 1 perc (60 mp)
-    TOWN: { duration: 120, title: "KISVÁROS PÁLYA", bg: "#1a1a2e" } // 2 perc (120 mp)
+    FARM: { title: "TANYA PÁLYA", bg: "#0d0d26" },
+    FOREST: { title: "ERDŐ PÁLYA", bg: "#051a05" },
+    TOWN: { title: "KISVÁROS PÁLYA", bg: "#1a1a2e" }
 };
 
-// Játék objektumok
 let player, ufo, cameraX, obstacles, backgroundStars;
 let ufoActive = false;
 
@@ -166,11 +176,10 @@ class Cow {
         this.isGrounded = true;
         this.speed = 0;
         this.maxSpeed = 5;
-        this.abductionTimer = 0; // max 180 frame = 3 másodperc 60fps-en
+        this.abductionTimer = 0; 
     }
 
     update() {
-        // Futás logika
         if (keys.run) {
             this.speed = Math.min(this.speed + 0.2, this.maxSpeed);
         } else {
@@ -178,7 +187,6 @@ class Cow {
         }
         this.x += this.speed;
 
-        // Ugrás logika
         if (keys.jump && this.isGrounded) {
             this.vy = -12;
             this.isGrounded = false;
@@ -187,7 +195,6 @@ class Cow {
         this.vy += this.gravity;
         this.y += this.vy;
 
-        // Talaj ütközés
         if (this.y >= 300) {
             this.y = 300;
             this.vy = 0;
@@ -199,17 +206,14 @@ class Cow {
         ctx.save();
         ctx.translate(this.x, this.y);
 
-        // Tehén test (Fehér alapon fekete foltok)
         ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 5, this.width - 15, this.height - 15); // törzs
+        ctx.fillRect(0, 5, this.width - 15, this.height - 15); 
         
-        // Fekete foltok
         ctx.fillStyle = "#000000";
         ctx.fillRect(10, 10, 12, 12);
         ctx.fillRect(25, 18, 10, 10);
         ctx.fillRect(5, 20, 8, 8);
 
-        // Lábak (stilizált mozgás)
         ctx.fillStyle = "#ffffff";
         let legOffset = (Math.sin(Date.now() * 0.01 * this.speed)) * 5;
         if(this.speed === 0) legOffset = 0;
@@ -218,12 +222,11 @@ class Cow {
         ctx.fillRect(30, this.height - 10, 6, 10 + legOffset);
         ctx.fillRect(40, this.height - 10, 6, 10 - legOffset);
 
-        // Fej
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(this.width - 15, 0, 15, 18);
-        ctx.fillStyle = "#000000"; // folt a fejen
+        ctx.fillStyle = "#000000"; 
         ctx.fillRect(this.width - 10, 0, 8, 6);
-        ctx.fillStyle = "#ffb6c1"; // orr
+        ctx.fillStyle = "#ffb6c1"; 
         ctx.fillRect(this.width - 5, 8, 5, 10);
 
         ctx.restore();
@@ -239,12 +242,10 @@ class UFO {
     }
 
     update(targetX) {
-        // Finoman követi a tehenet lemaradással
         this.x += (targetX - 20 - this.x) * 0.05;
     }
 
     draw() {
-        // Sárga földig érő sugár rajzolása
         if (ufoActive) {
             let gradient = ctx.createLinearGradient(this.x + 50, this.y + 20, this.x + 50, 340);
             gradient.addColorStop(0, 'rgba(255, 230, 0, 0.6)');
@@ -259,19 +260,16 @@ class UFO {
             ctx.fill();
         }
 
-        // UFO fém teste
         ctx.fillStyle = "#888899";
         ctx.beginPath();
         ctx.ellipse(this.x + 50, this.y + 15, this.width / 2, this.height / 2, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // UFO üveg kupola
         ctx.fillStyle = "#00ffff";
         ctx.beginPath();
         ctx.arc(this.x + 50, this.y + 8, 18, Math.PI, 0);
         ctx.fill();
 
-        // UFO kis jelzőfények
         ctx.fillStyle = (Math.floor(Date.now() / 200) % 2 === 0) ? "#ff0000" : "#00ff00";
         for (let i = 15; i < 90; i += 20) {
             ctx.fillRect(this.x + i, this.y + 15, 4, 4);
@@ -279,7 +277,6 @@ class UFO {
     }
 }
 
-// Véletlenszerű csillagos háttér generálás
 function generateStars() {
     backgroundStars = [];
     for(let i=0; i<100; i++) {
@@ -301,5 +298,11 @@ function spawnObstacle() {
         type = Math.random() > 0.5 ? "hydrant" : "box";
     }
 
-    // Csak a látótéren kívül hozzuk létre jobb oldalon
-  
+    let spawnX = player.x + 600 + Math.random() * 300;
+
+    if (gameTime > 5) {
+        obstacles.push({ x: spawnX, y: 310, width: 30, height: 30, type: type });
+    }
+
+    setTimeout(spawnObstacle, 1500 + Math.random() * 1500);
+    
