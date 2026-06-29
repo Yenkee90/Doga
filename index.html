@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tehén Teszt - Menü</title>
+    <style>
+        /* Modern, sötét tónusú háttér a tanyasi játék hangulatához */
+        body {
+            background-color: #050510;
+            color: #ffffff;
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Nagybetűs, középre igazított, szép sárgás retro cím */
+        h1 {
+            font-size: 36px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+            text-align: center;
+        }
+
+        /* Gombokat tartalmazó függőleges box */
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        /* Reszponzív, nagy, könnyen koppintható gombok stílusa */
+        .menu-btn {
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #222235;
+            border: 2px solid #444460;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        /* Érintés vagy egér fókusz hatás */
+        .menu-btn:active {
+            background-color: #444460;
+            transform: scale(0.98);
+        }
+
+        /* Az üres gombok kicsit áttetszőbbek, jelezve, hogy még nem aktívak */
+        .disabled-btn {
+            background-color: #151520;
+            border: 2px dashed #333344;
+            color: #666677;
+            cursor: default;
+        }
+        .disabled-btn:active {
+            background-color: #151520;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>TEHÉN TESZT</h1>
+
+    <div class="menu-container">
+        <!-- Aktív teszt gombok a kért elérési utakkal -->
+        <a href="1one/index1.html" class="menu-btn">Teszt 1</a>
+        <a href="2two/index2.html" class="menu-btn">Teszt 2</a>
+        <a href="3three/index3.html" class="menu-btn">Teszt 3</a>
+        
+        <!-- Üres, fejlesztés alatt álló gombok -->
+        <div class="menu-btn disabled-btn">Teszt 4</div>
+        <div class="menu-btn disabled-btn">Teszt 5</div>
+    </div>
+
+</body>
+</html>
