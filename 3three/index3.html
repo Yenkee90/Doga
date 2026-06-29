@@ -175,7 +175,7 @@ function updatePhysics() {
     }
 
     if (ufoActive) {
-        ufoX += ((playerX - cameraX) - 20 - ufoX) * 0.035; 
+        ufoX += ((playerX - cameraX) - 20 - ufoX) * 0.015; 
         
         if (playerX - cameraX > ufoX - 10 && playerX - cameraX < ufoX + 90) {
             abductionTimer++;
