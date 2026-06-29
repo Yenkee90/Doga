@@ -5,68 +5,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=none">
     <title>Tehén Futam - UFO Invázió</title>
     <style>
-        body, html { background: #050510; color: white; font-family: sans-serif; text-align: center; margin: 0; padding: 10px; overflow-x: hidden; }
-        h1 { font-size: 24px; margin: 5px 0; color: #ffcc00; }
-        #info { font-size: 14px; margin-bottom: 10px; color: #ccc; }
+        * { box-sizing: border-box; user-select: none; -webkit-user-select: none; margin: 0; padding: 0; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background: #050510; font-family: sans-serif; }
         
-        /* Fix méretű, biztosan megjelenő játéktér */
-        #gameCanvas {
-            background: #0a0a1a;
-            border: 2px solid #333;
-            display: block;
-            margin: 0 auto;
-            width: 100%;
-            max-width: 600px;
-            height: auto;
-        }
-
-        #controls {
-            margin-top: 15px;
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
             display: flex;
             justify-content: center;
-            gap: 20px;
+            align-items: center;
         }
 
-        /* Nagy, biztosan megnyomható gombok */
-        .btn {
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            background: #222;
-            color: white;
-            border: 2px solid #555;
-            border-radius: 8px;
-            cursor: pointer;
+        canvas {
+            background: #0a0a1a;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            max-width: 100%;
+            max-height: 100%;
         }
-        .btn:active { background: #555; }
-        
-        #start-btn {
-            background: #ffcc00;
-            color: black;
-            border: none;
-            padding: 12px 25px;
+
+        /* Visszahoztam a szép, áttetsző kör alakú mobil gombokat */
+        .touch-btn {
+            position: absolute;
+            bottom: 8%;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            color: white;
             font-size: 16px;
             font-weight: bold;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 2px 4px black;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+        .touch-btn:active { background: rgba(255, 255, 255, 0.5); }
+        #left-btn { left: 5%; } /* FUTÁS */
+        #right-btn { right: 5%; } /* UGRÁS */
+
+        #ui-overlay {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            pointer-events: none;
+            z-index: 5;
+            text-shadow: 0 2px 4px #000;
+        }
+
+        #abduction-bar-container {
+            width: 200px;
+            height: 15px;
+            background: rgba(0,0,0,0.5);
+            border: 2px solid #ffaa00;
+            margin-top: 5px;
+            border-radius: 10px;
+            overflow: hidden;
+            display: none;
+        }
+        #abduction-bar { width: 0%; height: 100%; background: #ffcc00; transition: width 0.1s; }
+
+        #screen-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 20;
+            text-align: center;
+            padding: 20px;
+        }
+        #screen-overlay h1 { font-size: 32px; color: #ffcc00; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255,204,0,0.5); }
+        #screen-overlay p { font-size: 16px; margin-bottom: 20px; max-width: 500px; }
+        #start-btn {
+            padding: 12px 30px; font-size: 18px; font-weight: bold;
+            background: #ffcc00; color: #000; border: none; border-radius: 5px; cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <h1>TEHÉN FUTAM</h1>
-    <div id="info">Nyomd meg az indítás gombot, majd tartsd nyomva a FUTÁS gombot a haladáshoz!</div>
-    
-    <button id="start-btn">JÁTÉK INDÍTÁSA</button>
+    <div id="game-container">
+        <div id="ui-overlay">
+            <div id="zone-text">ZÓNA: CSŰR</div>
+            <div id="time-text">Hátralévő táv: 5:00</div>
+            <div id="abduction-bar-container">
+                <div>UFO ELRABLÁS VESZÉLY!</div>
+                <div id="abduction-bar"></div>
+            </div>
+        </div>
 
-    <div id="ui" style="font-weight: bold; margin-bottom: 5px;">Zóna: Csűr | Idő: 5:00</div>
+        <div id="screen-overlay">
+            <h1 id="overlay-title">TEHÉN FUTAM</h1>
+            <p id="overlay-desc">Fuss el a Csűrből egészen a Rendőrségig az éjszakán át! Kerüld el a tanyasi, erdei és városi akadályokat, és ne hagyd, hogy az UFO sugara 3 másodpercnél tovább magával ragadjon!</p>
+            <button id="start-btn">JÁTÉK INDÍTÁSA</button>
+        </div>
 
-    <canvas id="gameCanvas" width="600" height="300"></canvas>
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
 
-    <div id="controls">
-        <button id="left-btn" class="btn">FUTÁS</button>
-        <button id="right-btn" class="btn">UGRÁS</button>
+        <div id="left-btn" class="touch-btn">FUTÁS</div>
+        <div id="right-btn" class="touch-btn">UGRÁS</div>
     </div>
 
 <script>
@@ -75,60 +124,171 @@ const ctx = canvas.getContext("2d");
 
 const leftBtn = document.getElementById("left-btn");
 const rightBtn = document.getElementById("right-btn");
+const uiZone = document.getElementById("zone-text");
+const uiTime = document.getElementById("time-text");
+const uiBarContainer = document.getElementById("abduction-bar-container");
+const uiBar = document.getElementById("abduction-bar");
+const overlay = document.getElementById("screen-overlay");
+const overlayTitle = document.getElementById("overlay-title");
+const overlayDesc = document.getElementById("overlay-desc");
 const startBtn = document.getElementById("start-btn");
-const uiDiv = document.getElementById("ui");
 
 let gameState = "MENU"; 
 let gameTime = 300; 
 let timerInterval;
+
 let keys = { run: false, jump: false };
 
-let playerX = 50, playerY = 220, playerVy = 0, playerSpeed = 0, isGrounded = true;
-let cameraX = 0, ufoX = 0, ufoActive = false, abductionTimer = 0;
-let obstacles = [];
-
 const FAZISOK = {
-    FARM: { title: "TANYA", bg: "#0d0d26" },
-    FOREST: { title: "ERDŐ", bg: "#051a05" },
-    TOWN: { title: "KISVÁROS", bg: "#1a1a2e" }
+    FARM: { title: "TANYA PÁLYA", bg: "#0d0d26" },
+    FOREST: { title: "ERDŐ PÁLYA", bg: "#051a05" },
+    TOWN: { title: "KISVÁROS PÁLYA", bg: "#1a1a2e" }
 };
 
-// Egyszerűsített gombkezelők
-startBtn.addEventListener("click", startGame);
-startBtn.addEventListener("touchstart", (e) => { e.preventDefault(); startGame(); });
+let player, ufo, cameraX, obstacles, backgroundStars;
+let ufoActive = false;
 
-leftBtn.addEventListener("touchstart", (e) => { e.preventDefault(); keys.run = true; });
-leftBtn.addEventListener("touchend", (e) => { e.preventDefault(); keys.run = false; });
-leftBtn.addEventListener("mousedown", () => { keys.run = true; });
-leftBtn.addEventListener("mouseup", () => { keys.run = false; });
+class Cow {
+    constructor() {
+        this.x = 50;
+        this.y = 300;
+        this.width = 60;
+        this.height = 40;
+        this.vy = 0;
+        this.gravity = 0.6;
+        this.isGrounded = true;
+        this.speed = 0;
+        this.maxSpeed = 5;
+        this.abductionTimer = 0; 
+    }
 
-rightBtn.addEventListener("touchstart", (e) => { e.preventDefault(); keys.jump = true; });
-rightBtn.addEventListener("touchend", (e) => { e.preventDefault(); keys.jump = false; });
-rightBtn.addEventListener("mousedown", () => { keys.jump = true; });
-rightBtn.addEventListener("mouseup", () => { keys.jump = false; });
-
-function startGame() {
-    gameState = "PLAYING";
-    gameTime = 300;
-    playerX = 50; playerY = 220; playerVy = 0; playerSpeed = 0;
-    cameraX = 0; ufoX = 0; ufoActive = false; abductionTimer = 0;
-    obstacles = [];
-    startBtn.style.display = "none";
-    
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-        if (gameState === "PLAYING") {
-            gameTime--;
-            if (gameTime <= 0) endGame("WIN");
+    update() {
+        if (keys.run) {
+            this.speed = Math.min(this.speed + 0.2, this.maxSpeed);
+        } else {
+            this.speed = Math.max(this.speed - 0.1, 0);
         }
-    }, 1000);
+        this.x += this.speed;
+
+        if (keys.jump && this.isGrounded) {
+            this.vy = -12;
+            this.isGrounded = false;
+        }
+
+        this.vy += this.gravity;
+        this.y += this.vy;
+
+        if (this.y >= 300) {
+            this.y = 300;
+            this.vy = 0;
+            this.isGrounded = true;
+        }
+    }
+
+    draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 5, this.width - 15, this.height - 15); 
+        
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(10, 10, 12, 12);
+        ctx.fillRect(25, 18, 10, 10);
+        ctx.fillRect(5, 20, 8, 8);
+
+        ctx.fillStyle = "#ffffff";
+        let legOffset = (Math.sin(Date.now() * 0.01 * this.speed)) * 5;
+        if(this.speed === 0) legOffset = 0;
+        ctx.fillRect(5, this.height - 10, 6, 10 + legOffset);
+        ctx.fillRect(15, this.height - 10, 6, 10 - legOffset);
+        ctx.fillRect(30, this.height - 10, 6, 10 + legOffset);
+        ctx.fillRect(40, this.height - 10, 6, 10 - legOffset);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(this.width - 15, 0, 15, 18);
+        ctx.fillStyle = "#000000"; 
+        ctx.fillRect(this.width - 10, 0, 8, 6);
+        ctx.fillStyle = "#ffb6c1"; 
+        ctx.fillRect(this.width - 5, 8, 5, 10);
+
+        ctx.restore();
+    }
 }
 
-function endGame(status) {
-    gameState = "MENU";
-    clearInterval(timerInterval);
-    startBtn.style.display = "inline-block";
-    startBtn.innerText = status === "WIN" ? "GYŐZELEM! ÚJRA?" : "JÁTÉK VÉGE! ÚJRAINDÍTÁS";
+class UFO {
+    constructor() {
+        this.x = 0;
+        this.y = 40;
+        this.width = 100;
+        this.height = 35;
+    }
+
+    update(targetX) {
+        // KICSIT LASSÍTOTTAM AZ UFO REAKCIÓIDEJÉN (0.05 helyett 0.035), hogy ne kapjon el azonnal!
+        this.x += (targetX - 20 - this.x) * 0.035;
+    }
+
+    draw() {
+        if (ufoActive) {
+            let gradient = ctx.createLinearGradient(this.x + 50, this.y + 20, this.x + 50, 340);
+            gradient.addColorStop(0, 'rgba(255, 230, 0, 0.6)');
+            gradient.addColorStop(1, 'rgba(255, 230, 0, 0.0)');
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.moveTo(this.x + 30, this.y + 20);
+            ctx.lineTo(this.x + 70, this.y + 20);
+            ctx.lineTo(this.x + 110, 340);
+            ctx.lineTo(this.x - 10, 340);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        ctx.fillStyle = "#888899";
+        ctx.beginPath();
+        ctx.ellipse(this.x + 50, this.y + 15, this.width / 2, this.height / 2, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "#00ffff";
+        ctx.beginPath();
+        ctx.arc(this.x + 50, this.y + 8, 18, Math.PI, 0);
+        ctx.fill();
+
+        ctx.fillStyle = (Math.floor(Date.now() / 200) % 2 === 0) ? "#ff0000" : "#00ff00";
+        for (let i = 15; i < 90; i += 20) {
+            ctx.fillRect(this.x + i, this.y + 15, 4, 4);
+        }
+    }
+}
+
+function generateStars() {
+    backgroundStars = [];
+    for(let i=0; i<100; i++) {
+        backgroundStars.push({ x: Math.random() * 2000, y: Math.random() * 200, r: Math.random() * 2 });
+    }
+}
+
+function spawnObstacle() {
+    if (gameState !== "PLAYING") return;
+    
+    let currentPhase = getCurrentPhase();
+    let type = "hay";
+    
+    if (currentPhase === "FARM") {
+        type = Math.random() > 0.5 ? "hay" : "fence";
+    } else if (currentPhase === "FOREST") {
+        type = Math.random() > 0.5 ? "log" : "bush";
+    } else if (currentPhase === "TOWN") {
+        type = Math.random() > 0.5 ? "hydrant" : "box";
+    }
+
+    let spawnX = player.x + 600 + Math.random() * 300;
+
+    if (gameTime > 5) {
+        obstacles.push({ x: spawnX, y: 310, width: 30, height: 30, type: type });
+    }
+
+    setTimeout(spawnObstacle, 1800 + Math.random() * 1500);
 }
 
 function getCurrentPhase() {
@@ -137,120 +297,9 @@ function getCurrentPhase() {
     return "TOWN";                        
 }
 
-function updatePhysics() {
-    if (keys.run) playerSpeed = Math.min(playerSpeed + 0.2, 4);
-    else playerSpeed = Math.max(playerSpeed - 0.1, 0);
-    playerX += playerSpeed;
+function setupInput() {
+    leftBtn.addEventListener("touchstart", (e) => { e.preventDefault(); keys.run = true; }, {passive: false});
+    leftBtn.addEventListener("touchend", (e) => { e.preventDefault(); keys.run = false; }, {passive: false});
+    leftBtn.addEventListener("touchcancel", (e) => { keys.run = false; });
 
-    if (keys.jump && isGrounded) {
-        playerVy = -10;
-        isGrounded = false;
-    }
-    playerVy += 0.5; // gravitáció
-    playerY += playerVy;
-
-    if (playerY >= 220) {
-        playerY = 220;
-        playerVy = 0;
-        isGrounded = true;
-    }
-
-    if (playerX >= 300) {
-        cameraX = playerX - 300;
-        ufoActive = true;
-    }
-
-    if (ufoActive) {
-        ufoX += ((playerX - cameraX) - 20 - ufoX) * 0.05;
-        
-        // Sugár ütközés
-        if (playerX - cameraX > ufoX - 10 && playerX - cameraX < ufoX + 90) {
-            abductionTimer++;
-            if (abductionTimer >= 180) endGame("LOSE");
-        } else {
-            abductionTimer = Math.max(abductionTimer - 1, 0);
-        }
-    }
-
-    // Akadály generálás
-    if (Math.random() < 0.01 && obstacles.length < 3) {
-        obstacles.push({ x: playerX + 400 + Math.random() * 200, hit: false });
-    }
-
-    // Akadály ütközés és tisztítás
-    obstacles.forEach((obs, index) => {
-        if (playerX + 40 > obs.x && playerX < obs.x + 20 && playerY > 200) {
-            playerSpeed = 0.5; // Lassulás
-        }
-        if (obs.x < cameraX - 50) obstacles.splice(index, 1);
-    });
-}
-
-function draw() {
-    let phase = getCurrentPhase();
-    ctx.fillStyle = FAZISOK[phase].bg;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Háttér talaj
-    ctx.fillStyle = phase === "TOWN" ? "#222225" : "#112211";
-    ctx.fillRect(0, 250, canvas.width, 50);
-
-    ctx.save();
-    ctx.translate(-cameraX, 0);
-
-    // Csűr az elején
-    ctx.fillStyle = "#5a1a1a";
-    ctx.fillRect(0, 150, 120, 100);
-    ctx.fillStyle = "#000";
-    ctx.fillRect(40, 180, 40, 70);
-
-    // Akadályok
-    ctx.fillStyle = "#997722";
-    obstacles.forEach(obs => {
-        ctx.fillRect(obs.x, 225, 20, 25);
-    });
-
-    // Tehén rajzolása
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(playerX, playerY, 45, 30);
-    ctx.fillStyle = "#000000"; // Foltok
-    ctx.fillRect(playerX + 10, playerY + 5, 10, 10);
-    ctx.fillRect(playerX + 25, playerY + 12, 8, 8);
-    ctx.fillStyle = "#ffffff"; // Fej
-    ctx.fillRect(playerX + 35, playerY - 5, 12, 15);
-    ctx.fillStyle = "#ffb6c1"; // Orr
-    ctx.fillRect(playerX + 42, playerY, 5, 8);
-
-    ctx.restore();
-
-    // UFO rajzolása
-    if (ufoActive) {
-        // Sugár
-        ctx.fillStyle = "rgba(255, 230, 0, 0.3)";
-        ctx.beginPath();
-        ctx.moveTo(ufoX + 20, 40); ctx.lineTo(ufoX + 60, 40);
-        ctx.lineTo(ufoX + 90, 250); ctx.lineTo(ufoX - 10, 250);
-        ctx.closePath(); ctx.fill();
-
-        // Hajó
-        ctx.fillStyle = "#888899";
-        ctx.fillRect(ufoX, 20, 80, 20);
-        ctx.fillStyle = "#00ffff";
-        ctx.fillRect(ufoX + 25, 10, 30, 10);
-    }
-
-    // UI Szöveg frissítése a canvas felett
-    let m = Math.floor(gameTime / 60);
-    let s = gameTime % 60;
-    uiDiv.innerText = `Zóna: ${FAZISOK[phase].title} | Hátralévő táv: ${m}:${s < 10 ? '0' : ''}${s} ${abductionTimer > 0 ? '⚠️ UFO VESZÉLY!' : ''}`;
-}
-
-function loop() {
-    if (gameState === "PLAYING") updatePhysics();
-    draw();
-    requestAnimationFrame(loop);
-}
-loop();
-</script>
-</body>
-</html>
+    
