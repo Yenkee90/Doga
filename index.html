@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ugrimuu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="cow-trophy left-trophy">🐮</div>
+
+    <div class="dropdown" id="menuDropdown">
+        <div class="cow-trophy right-trophy" onclick="toggleMenu()">🐮</div>
+        <div class="dropdown-content">
+            <a href="1one/index1.html">Teszt</a>
+            <a href="2two/index2.html">Teszt</a>
+            <a href="3three/index3.html">Teszt</a>
+            <a href="4four/index4.html">Teszt</a>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <h1>Ugrimuu</h1>
+        
+        <a href="4four/index4.html" class="start-btn">Indítás</a>
+        
+        <div class="story-text">
+            [Ide másolom majd be a történetet, ha elküldöd!]
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("menuDropdown").classList.toggle("show");
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.right-trophy')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.parentElement.classList.contains('show')) {
+                        openDropdown.parentElement.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
