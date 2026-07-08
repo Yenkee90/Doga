@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ugrimuu</title>
-    <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="indi/manifest.json">
+  <link rel="manifest" href="indi/manifest.json">
+    <link rel="apple-touch-icon" href="indi/manifest.json">
+    <link rel="icon" type="image/svg+xml" href="indi/manifest.json">
+
+    <!-- Telefonos teljes képernyős beállítások -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<!-- A játék új neve iPhone-ra -->
+    <meta name="apple-mobile-web-app-title" content="Ugrimuu">
     
     <style>
         body {
@@ -41,11 +50,34 @@
             border: 4px solid #fff;
         }
     </style>
+
+ <script>
+        // Cseréld ki ezt a saját játékod pontos GitHub Pages linkjére:
+        window.location.href = "https://yenkee90.github.io/Doga/";
+ </script>
+    <script>
+    // Automatikusan legeneráljuk a tehénkét ikonnak, mikor betölt az oldal
+    window.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 192;
+        canvas.height = 192;
+        const ctx = canvas.getContext('2d');
+// Létrehozzuk a láthatatlan linket a telefonnak, amit a manifest olvas be
+        const favicon = document.createElement('link');
+        favicon.rel = 'icon';
+        favicon.type = 'image/png';
+        favicon.href = canvas.toDataURL('image/png');
+        document.head.appendChild(favicon);
+        
+        // Ez kell a manifest.json-nek apple és android eszközökön is
+        const appleIcon = document.createElement('link');
+        appleIcon.rel = 'apple-touch-icon';
+        appleIcon.href = canvas.toDataURL('image/png');
+        document.head.appendChild(appleIcon);
+    });
+</script> 
 </head>
 <body>
-
-    <!-- Ide rajzolódik a játék -->
-    <canvas id="gameCanvas" width="800" height="400"></canvas>
 
     <script>
         const canvas = document.getElementById("gameCanvas");
@@ -54,12 +86,8 @@
         // Alap változók a tehénnek
         let playerX = 100;
         let playerY = 200;
-        let playerSpeed = 5; // Ha 0, a lábak megállnak
+        let playerSpeed = 0; // Ha 0, a lábak megállnak
 
-        // Ez a függvény futtatja a játékot (másodpercenként kb. 60-szor)
-        function gameLoop() {
-            // Letisztítjuk a pályát
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             // --- ITT VAN A TEHÉN RAJZOLÓ KÓDOD ---
             ctx.save();
@@ -70,24 +98,7 @@
             ctx.fillStyle = "#ffb6c1"; ctx.fillRect(playerX + 42, playerY, 5, 8);
             ctx.fillStyle = "#ffffff";
             
-            // Lábak mozgása
-            let legOffset = (Math.sin(Date.now() * 0.01 * playerSpeed)) * 5;
-            if(playerSpeed === 0) legOffset = 0;
             
-            ctx.fillRect(playerX + 5, playerY + 30, 6, 10 + legOffset); 
-            ctx.fillRect(playerX + 15, playerY + 30, 6, 10 - legOffset);
-            ctx.fillRect(playerX + 25, playerY + 30, 6, 10 + legOffset); 
-            ctx.fillRect(playerX + 35, playerY + 30, 6, 10 - legOffset);
-
-            ctx.restore();
-            // -------------------------------------
-
-            // Újra meghívjuk a kört
-            requestAnimationFrame(gameLoop);
-        }
-
-        // Játék indítása
-        gameLoop();
     </script>
 </body>
 </html>
