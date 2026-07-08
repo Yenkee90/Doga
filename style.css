@@ -12,8 +12,8 @@ body {
     color: #000000;
     font-family: 'Arial Black', sans-serif;
     margin: 0;
-    padding: 20px;
-    display: block; /* Weasyprint kompatibilis / tiszta elrendezés */
+    padding: 15px;
+    display: block;
     min-height: 100vh;
     box-sizing: border-box;
     position: relative;
@@ -21,34 +21,34 @@ body {
 
 /* Központi doboz, ami kiemeli a szöveget a foltos háttérből */
 .content-container {
-    background-color: rgba(255, 255, 255, 0.94);
-    padding: 40px 20px;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px 20px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     text-align: center;
-    max-width: 600px;
-    margin: 120px auto 40px auto; /* Helyet hagyunk a fenti tehénfejeknek */
-    width: 90%;
+    max-width: 650px;
+    margin: 120px auto 40px auto; /* Hely a fenti tehénfejeknek */
+    width: 95%;
     box-sizing: border-box;
     border: 4px solid #4a2c11; /* Rustikus fakeret hatás */
 }
 
 /* Nagybetűs, középre igazított cím */
 h1 {
-    font-size: 42px;
+    font-size: 38px;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    margin: 0 0 40px 0; /* Két sornyi távolság a gomb előtt */
+    letter-spacing: 2px;
+    margin: 0 0 35px 0;
     color: #111111;
     text-shadow: 2px 2px 0px #ffcc00;
 }
 
-/* Indítás gomb stílusa - kicsivel nagyobb mint a szöveg */
+/* Indítás gomb stílusa */
 .start-btn {
     display: inline-block;
     text-decoration: none;
     text-align: center;
-    padding: 14px 32px; /* Kicsit nagyobb méretezés a szövegnél */
+    padding: 14px 36px;
     font-size: 22px;
     font-weight: bold;
     color: #ffffff;
@@ -58,7 +58,7 @@ h1 {
     box-shadow: 0 6px 0px #271505;
     cursor: pointer;
     transition: all 0.1s ease;
-    margin-bottom: 25px; /* Egy sornyi távolság a történet előtt */
+    margin-bottom: 30px;
 }
 
 .start-btn:hover {
@@ -70,43 +70,47 @@ h1 {
     box-shadow: 0 2px 0px #271505;
 }
 
-/* Játék története rész */
+/* JÁTÉK TÖRTÉNETE JAVÍTÁS: Szép, olvasható sorközök és igazítás mobilon is */
 .story-text {
     font-size: 16px;
     line-height: 1.6;
-    color: #333333;
-    text-align: center;
-    font-family: sans-serif;
+    color: #222222;
+    text-align: justify; /* Sorkizárt, hogy ne legyen csipkés a széle */
+    text-align-last: center; /* Az utolsó sorok középre igazodnak a szép hatásért */
+    font-family: Arial, sans-serif; /* Normál olvasható betűtípus a sztorinak */
     font-weight: normal;
     margin-top: 25px;
-    word-wrap: break-word;
+}
+
+.story-text p {
+    margin-bottom: 15px;
 }
 
 /* Trófea/Tehénfejek közös stílusa a sarkokban */
 .cow-trophy {
     position: absolute;
     top: 20px;
-    width: 80px;
-    height: 80px;
-    background-color: #cd853f; /* Fa alapszín */
-    border: 5px solid #4a2c11; /* Sötét fa keret */
+    width: 75px;
+    height: 75px;
+    background-color: #cd853f;
+    border: 5px solid #4a2c11;
     border-radius: 50%;
     display: table-cell;
     vertical-align: middle;
     text-align: center;
-    line-height: 70px;
-    font-size: 45px;
+    line-height: 65px;
+    font-size: 40px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);
     z-index: 10;
     user-select: none;
 }
 
 .left-trophy {
-    left: 20px;
+    left: 15px;
 }
 
 .right-trophy {
-    right: 20px;
+    right: 15px;
     cursor: pointer;
 }
 
@@ -114,17 +118,17 @@ h1 {
 .dropdown {
     position: absolute;
     top: 20px;
-    right: 20px;
+    right: 15px;
     z-index: 20;
 }
 
-/* A menü listája, ami alaphelyzetben rejtve van */
+/* A menü listája */
 .dropdown-content {
     display: none;
     position: absolute;
-    top: 95px;
+    top: 90px;
     right: 0;
-    background-color: #222235; /* Sötét tónusú menü */
+    background-color: #222235;
     min-width: 180px;
     box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
     border-radius: 10px;
