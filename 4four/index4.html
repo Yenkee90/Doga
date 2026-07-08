@@ -141,7 +141,7 @@ function updatePhysics() {
     if (ufoActive) {
         let playerScreenX = playerX - cameraX;
         let ufoTargetX = playerSpeed > 3.5 ? -150 : playerScreenX - 20;
-        ufoScreenX += (ufoTargetX - ufoScreenX) * 0.025; 
+        ufoScreenX += (ufoTargetX - ufoScreenX) * 0.25; 
         
         if (playerScreenX > ufoScreenX - 10 && playerScreenX < ufoScreenX + 90 && ufoScreenX > 0) {
             abductionTimer++;
