@@ -6,8 +6,88 @@
     <title>Ugrimuu</title>
     <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
+    
+    <style>
+        body {
+    background-color: #ffffff;
+    background-image: 
+        radial-gradient(circle at 20% 30%, #000000 9%, transparent 10%),
+        radial-gradient(circle at 75% 20%, #000000 13%, transparent 14%),
+        radial-gradient(circle at 40% 70%, #000000 16%, transparent 17%),
+        radial-gradient(circle at 85% 75%, #000000 11%, transparent 12%),
+        radial-gradient(circle at 10% 85%, #000000 8%, transparent 9%),
+        radial-gradient(circle at 50% 15%, #000000 7%, transparent 8%);
+    background-size: 400px 400px;
+    color: #000000;
+    font-family: 'Arial Black', sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: block;
+    min-height: 100vh;
+    box-sizing: border-box;
+    position: relative;
+        }
+        
+        {
+            margin: 0;
+            background-color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas {
+            background-color: #222;
+            border: 4px solid #fff;
+        }
+    </style>
 </head>
 <body>
 
-  </body>
+    <!-- Ide rajzolódik a játék -->
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Alap változók a tehénnek
+        let playerX = 100;
+        let playerY = 200;
+        let playerSpeed = 5; // Ha 0, a lábak megállnak
+
+        // Ez a függvény futtatja a játékot (másodpercenként kb. 60-szor)
+        function gameLoop() {
+            // Letisztítjuk a pályát
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // --- ITT VAN A TEHÉN RAJZOLÓ KÓDOD ---
+            ctx.save();
+            
+            ctx.fillStyle = "#ffffff"; ctx.fillRect(playerX, playerY, 45, 30);
+            ctx.fillStyle = "#000000"; ctx.fillRect(playerX + 10, playerY + 5, 10, 10); ctx.fillRect(playerX + 25, playerY + 12, 8, 8);
+            ctx.fillStyle = "#ffffff"; ctx.fillRect(playerX + 35, playerY - 5, 12, 15);
+            ctx.fillStyle = "#ffb6c1"; ctx.fillRect(playerX + 42, playerY, 5, 8);
+            ctx.fillStyle = "#ffffff";
+            
+            // Lábak mozgása
+            let legOffset = (Math.sin(Date.now() * 0.01 * playerSpeed)) * 5;
+            if(playerSpeed === 0) legOffset = 0;
+            
+            ctx.fillRect(playerX + 5, playerY + 30, 6, 10 + legOffset); 
+            ctx.fillRect(playerX + 15, playerY + 30, 6, 10 - legOffset);
+            ctx.fillRect(playerX + 25, playerY + 30, 6, 10 + legOffset); 
+            ctx.fillRect(playerX + 35, playerY + 30, 6, 10 - legOffset);
+
+            ctx.restore();
+            // -------------------------------------
+
+            // Újra meghívjuk a kört
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Játék indítása
+        gameLoop();
+    </script>
+</body>
 </html>
