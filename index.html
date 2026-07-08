@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ugrimuu</title>
@@ -53,34 +51,6 @@
             }
         }
         
-window.addEventListener('DOMContentLoaded', () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = 192;
-        canvas.height = 192;
-        const ctx = canvas.getContext('2d');
-
-    const favicon = document.createElement('link');
-        favicon.rel = 'icon';
-        favicon.type = 'image/png';
-        favicon.href = canvas.toDataURL('image/png');
-        document.head.appendChild(favicon);
-        
-        // Ez kell a manifest.json-nek apple és android eszközökön is
-        const appleIcon = document.createElement('link');
-        appleIcon.rel = 'apple-touch-icon';
-        appleIcon.href = canvas.toDataURL('image/png');
-        document.head.appendChild(appleIcon);
-
-ctx.fillStyle = "#ffffff"; ctx.fillRect(playerX, playerY, 45, 30);
-        ctx.fillStyle = "#000000"; ctx.fillRect(playerX + 10, playerY + 5, 10, 10); ctx.fillRect(playerX + 25, playerY + 12, 8, 8);
-        ctx.fillStyle = "#ffffff"; ctx.fillRect(playerX + 35, playerY - 5, 12, 15);
-        ctx.fillStyle = "#ffb6c1"; ctx.fillRect(playerX + 42, playerY, 5, 8);
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(playerX + 5, playerY + 30, 6, 10); ctx.fillRect(playerX + 15, playerY + 30, 6, 10);
-        ctx.fillRect(playerX + 25, playerY + 30, 6, 10); ctx.fillRect(playerX + 35, playerY + 30, 6, 10);
-
-        ctx.restore();
-    
     </script>
 
 </body>
