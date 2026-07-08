@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=none">
+
+<title>Ugrimuu</title>
+
+
+<link rel="stylesheet" href="style.css">
+
+
+</head>
+
+
+<body>
+
+
+<h1>UGRIMUU</h1>
+
+
+<div id="ui">
+
+Zóna: Farm pálya | Távolság: 0 m
+
+</div>
+
+
+
+<div id="game-container">
+
+
+<div id="screen-overlay">
+
+
+<h1 id="overlay-title">
+JÁTÉK VÉGE
+</h1>
+
+
+<p id="overlay-desc">
+Az UFO elkapta a tehenet!
+</p>
+
+
+
+<button id="start-btn-overlay">
+
+ÚJRAINDÍTÁS
+
+</button>
+
+
+</div>
+
+
+
+<canvas id="gameCanvas" width="600" height="300"></canvas>
+
+
+</div>
+
+
+
+
+<div id="controls">
+
+
+<button id="left-btn" class="btn">
+
+FUTÁS
+
+</button>
+
+
+<button id="right-btn" class="btn">
+
+UGRÁS
+
+</button>
+
+
+</div>
+<!-- Játék vezérlő fájlok -->
+
+<script src="world.js"></script>
+<script src="obstacles.js"></script>
+<script src="ufo.js"></script>
+<script src="render.js"></script>
+<script src="game.js"></script>
+
+
+</body>
+
+</html>
