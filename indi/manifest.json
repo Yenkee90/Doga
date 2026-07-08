@@ -13,7 +13,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "indi/index1.html",
+  "start_url": "index.html",
   "background_color": "#ffffff",
   "display": "standalone",
   "theme_color": "#4a2c11"
