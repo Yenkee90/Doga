@@ -1,0 +1,341 @@
+/* ==========================================================
+   UGRIMUU
+   style.css
+========================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-user-select:none;
+    user-select:none;
+    touch-action:manipulation;
+}
+
+html,
+body{
+
+    width:100%;
+    height:100%;
+
+    overflow:hidden;
+
+    background:#050510;
+
+    color:#ffffff;
+
+    font-family:Arial,Helvetica,sans-serif;
+
+}
+
+body{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+
+/* =============================
+   FELSŐ INFORMÁCIÓS SÁV
+============================= */
+
+#topBar{
+
+    background:#111122;
+
+    padding:10px;
+
+    border-bottom:2px solid #333;
+
+}
+
+#topBar h1{
+
+    text-align:center;
+
+    color:#ffd84a;
+
+    font-size:28px;
+
+    margin-bottom:10px;
+
+}
+
+
+
+/* =============================
+   HALADÁSI SÁV
+============================= */
+
+#progressContainer{
+
+    width:100%;
+
+    margin-bottom:10px;
+
+}
+
+#progressTrack{
+
+    position:relative;
+
+    width:100%;
+
+    height:18px;
+
+    background:#222;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+}
+
+#progressFill{
+
+    width:0%;
+
+    height:100%;
+
+    background:#44cc55;
+
+}
+
+#progressCow{
+
+    position:absolute;
+
+    left:0;
+
+    top:-12px;
+
+    font-size:26px;
+
+}
+
+
+
+/* =============================
+   INFORMÁCIÓK
+============================= */
+
+#gameInfo{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:10px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+
+
+/* =============================
+   JÁTÉKTÉR
+============================= */
+
+#gameArea{
+
+    position:relative;
+
+    flex:1;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:hidden;
+
+    background:#050510;
+
+}
+
+
+
+#gameCanvas{
+
+    width:100%;
+
+    max-width:900px;
+
+    aspect-ratio:16/9;
+
+    border:2px solid #333;
+
+    background:#000;
+
+}
+
+
+
+/* =============================
+   KEZDŐ / VÉGE ABLAK
+============================= */
+
+#overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:rgba(0,0,0,.82);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:100;
+
+    padding:20px;
+
+    text-align:center;
+
+}
+
+#overlayTitle{
+
+    color:#ffd84a;
+
+    font-size:34px;
+
+    margin-bottom:20px;
+
+}
+
+#overlayText{
+
+    font-size:20px;
+
+    line-height:1.5;
+
+    margin-bottom:30px;
+
+    max-width:500px;
+
+}
+
+#startButton{
+
+    background:#ffd84a;
+
+    color:#000;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:18px 36px;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+}
+
+
+
+/* =============================
+   GOMBOK
+============================= */
+
+#controls{
+
+    display:flex;
+
+    justify-content:space-evenly;
+
+    gap:20px;
+
+    padding:15px;
+
+    background:#111122;
+
+    border-top:2px solid #333;
+
+}
+
+#controls button{
+
+    flex:1;
+
+    padding:20px;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    border:none;
+
+    border-radius:15px;
+
+    color:white;
+
+}
+
+#runButton{
+
+    background:#2b57ff;
+
+}
+
+#jumpButton{
+
+    background:#d52d2d;
+
+}
+
+#runButton:active{
+
+    transform:scale(.96);
+
+}
+
+#jumpButton:active{
+
+    transform:scale(.96);
+
+}
+
+
+
+/* =============================
+   MOBIL
+============================= */
+
+@media (max-width:700px){
+
+    #topBar h1{
+
+        font-size:22px;
+
+    }
+
+    #gameInfo{
+
+        font-size:15px;
+
+    }
+
+    #controls button{
+
+        font-size:22px;
+
+        padding:18px;
+
+    }
+
+}
